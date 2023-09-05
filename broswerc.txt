@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#fff">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, width=device-width">
+  <meta http-equiv="Content-Security-Policy" content="require-trusted-types-for 'script'; trusted-types;">
+  <title>证书版本过低</title>
+  
+  <style>
+
+a {
+  color: var(--link-color);
+}
+
+body {
+  --background-color: #fff;
+  --error-code-color: var(--google-gray-700);
+  --google-blue-100: rgb(210, 227, 252);
+  --google-blue-300: rgb(138, 180, 248);
+  --google-blue-600: rgb(26, 115, 232);
+  --google-blue-700: rgb(25, 103, 210);
+  --google-gray-100: rgb(241, 243, 244);
+  --google-gray-300: rgb(218, 220, 224);
+  --google-gray-500: rgb(154, 160, 166);
+  --google-gray-50: rgb(248, 249, 250);
+  --google-gray-600: rgb(128, 134, 139);
+  --google-gray-700: rgb(95, 99, 104);
+  --google-gray-800: rgb(60, 64, 67);
+  --google-gray-900: rgb(32, 33, 36);
+  --heading-color: var(--google-gray-900);
+  --link-color: rgb(88, 88, 88);
+  --popup-container-background-color: rgba(0,0,0,.65);
+  --primary-button-fill-color-active: var(--google-blue-700);
+  --primary-button-fill-color: var(--google-blue-600);
+  --primary-button-text-color: #fff;
+  --quiet-background-color: rgb(247, 247, 247);
+  --secondary-button-border-color: var(--google-gray-500);
+  --secondary-button-fill-color: #fff;
+  --secondary-button-hover-border-color: var(--google-gray-600);
+  --secondary-button-hover-fill-color: var(--google-gray-50);
+  --secondary-button-text-color: var(--google-gray-700);
+  --small-link-color: var(--google-gray-700);
+  --text-color: var(--google-gray-700);
+  background: var(--background-color);
+  color: var(--text-color);
+  word-wrap: break-word;
+}
+
+.nav-wrapper .secondary-button {
+  background: var(--secondary-button-fill-color);
+  border: 1px solid var(--secondary-button-border-color);
+  color: var(--secondary-button-text-color);
+  float: none;
+  margin: 0;
+  padding: 8px 16px;
+}
+
+.hidden {
+  display: none;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  font-size: 125%;
+}
+
+.icon {
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    --background-color: var(--google-gray-900);
+    --error-code-color: var(--google-gray-500);
+    --heading-color: var(--google-gray-500);
+    --link-color: var(--google-blue-300);
+    --primary-button-fill-color-active: rgb(129, 162, 208);
+    --primary-button-fill-color: var(--google-blue-300);
+    --primary-button-text-color: var(--google-gray-900);
+    --quiet-background-color: var(--background-color);
+    --secondary-button-border-color: var(--google-gray-700);
+    --secondary-button-fill-color: var(--google-gray-900);
+    --secondary-button-hover-fill-color: rgb(48, 51, 57);
+    --secondary-button-text-color: var(--google-blue-300);
+    --small-link-color: var(--google-blue-300);
+    --text-color: var(--google-gray-500);
+  }
+}
+</style>
+  
+  <style>
+
+button {
+  border: 0;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: var(--primary-button-text-color);
+  cursor: pointer;
+  float: right;
+  font-size: .875em;
+  margin: 0;
+  padding: 8px 16px;
+  transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+[dir='rtl'] button {
+  float: left;
+}
+
+.bad-clock button,
+.captive-portal button,
+.https-only button,
+.insecure-form button,
+.lookalike-url button,
+.main-frame-blocked button,
+.neterror button,
+.pdf button,
+.ssl button,
+.enterprise-block button,
+.enterprise-warn button,
+.safe-browsing-billing button {
+  background: var(--primary-button-fill-color);
+}
+
+button:active {
+  background: var(--primary-button-fill-color-active);
+  outline: 0;
+}
+
+#debugging {
+  display: inline;
+  overflow: auto;
+}
+
+.debugging-content {
+  line-height: 1em;
+  margin-bottom: 0;
+  margin-top: 1em;
+}
+
+.debugging-content-fixed-width {
+  display: block;
+  font-family: monospace;
+  font-size: 1.2em;
+  margin-top: 0.5em;
+}
+
+.debugging-title {
+  font-weight: bold;
+}
+
+#details {
+  margin: 0 0 50px;
+}
+
+#details p:not(:first-of-type) {
+  margin-top: 20px;
+}
+
+.secondary-button:active {
+  border-color: white;
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .3),
+      0 2px 6px 2px rgba(60, 64, 67, .15);
+}
+
+.secondary-button:hover {
+  background: var(--secondary-button-hover-fill-color);
+  border-color: var(--secondary-button-hover-border-color);
+  text-decoration: none;
+}
+
+.error-code {
+  color: var(--error-code-color);
+  font-size: .8em;
+  margin-top: 12px;
+  text-transform: uppercase;
+}
+
+#error-debugging-info {
+  font-size: 0.8em;
+}
+
+h1 {
+  color: var(--heading-color);
+  font-size: 1.6em;
+  font-weight: normal;
+  line-height: 1.25em;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 1.2em;
+  font-weight: normal;
+}
+
+.icon {
+  height: 72px;
+  margin: 0 0 40px;
+  width: 72px;
+}
+
+input[type=checkbox] {
+  opacity: 0;
+}
+
+input[type=checkbox]:focus ~ .checkbox::after {
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+.interstitial-wrapper {
+  box-sizing: border-box;
+  font-size: 1em;
+  line-height: 1.6em;
+  margin: 14vh auto 0;
+  max-width: 600px;
+  width: 100%;
+}
+
+#main-message > p {
+  display: inline;
+}
+
+#extended-reporting-opt-in {
+  font-size: .875em;
+  margin-top: 32px;
+}
+
+#extended-reporting-opt-in label {
+  display: grid;
+  grid-template-columns: 1.8em 1fr;
+  position: relative;
+}
+
+#enhanced-protection-message {
+  border-radius: 4px;
+  font-size: 1em;
+  margin-top: 32px;
+  padding: 10px 5px;
+}
+
+#enhanced-protection-message label {
+  display: grid;
+  grid-template-columns: 2.5em 1fr;
+  position: relative;
+}
+
+#enhanced-protection-message div {
+  margin: 0.5em;
+}
+
+#enhanced-protection-message .icon {
+  height: 1.5em;
+  vertical-align: middle;
+  width: 1.5em;
+}
+
+.nav-wrapper {
+  margin-top: 51px;
+}
+
+.nav-wrapper::after {
+  clear: both;
+  content: '';
+  display: table;
+  width: 100%;
+}
+
+.small-link {
+  color: var(--small-link-color);
+  font-size: .875em;
+}
+
+.checkboxes {
+  flex: 0 0 24px;
+}
+
+.checkbox {
+  --padding: .9em;
+  background: transparent;
+  display: block;
+  height: 1em;
+  left: -1em;
+  padding-inline-start: var(--padding);
+  position: absolute;
+  right: 0;
+  top: -.5em;
+  width: 1em;
+}
+
+.checkbox::after {
+  border: 1px solid white;
+  border-radius: 2px;
+  content: '';
+  height: 1em;
+  left: var(--padding);
+  position: absolute;
+  top: var(--padding);
+  width: 1em;
+}
+
+.checkbox::before {
+  background: transparent;
+  border: 2px solid white;
+  border-inline-end-width: 0;
+  border-top-width: 0;
+  content: '';
+  height: .2em;
+  left: calc(.3em + var(--padding));
+  opacity: 0;
+  position: absolute;
+  top: calc(.3em  + var(--padding));
+  transform: rotate(-45deg);
+  width: .5em;
+}
+
+input[type=checkbox]:checked ~ .checkbox::before {
+  opacity: 1;
+}
+
+#recurrent-error-message {
+  background: #ededed;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  margin-top: 12px;
+  padding: 12px 16px;
+}
+
+.showing-recurrent-error-message #extended-reporting-opt-in {
+  margin-top: 16px;
+}
+
+.showing-recurrent-error-message #enhanced-protection-message {
+  margin-top: 16px;
+}
+
+@media (max-width: 700px) {
+  .interstitial-wrapper {
+    padding: 0 10%;
+  }
+
+  #error-debugging-info {
+    overflow: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  button,
+  [dir='rtl'] button,
+  .small-link {
+    float: none;
+    font-size: .825em;
+    font-weight: 500;
+    margin: 0;
+    width: 100%;
+  }
+
+  button {
+    padding: 16px 24px;
+  }
+
+  #details {
+    margin: 20px 0 20px 0;
+  }
+
+  #details p:not(:first-of-type) {
+    margin-top: 10px;
+  }
+
+  .secondary-button:not(.hidden) {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .interstitial-wrapper {
+    padding: 0 5%;
+  }
+
+  #extended-reporting-opt-in {
+    margin-top: 24px;
+  }
+
+  #enhanced-protection-message {
+    margin-top: 24px;
+  }
+
+  .nav-wrapper {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav-wrapper .secondary-button {
+    border: 0;
+    margin: 16px 0 0;
+    margin-inline-end: 0;
+    padding-bottom: 16px;
+    padding-top: 16px;
+  }
+}
+
+@media (min-width: 240px) and (max-width: 420px) and
+       (min-height: 401px),
+       (min-width: 421px) and (min-height: 240px) and
+       (max-height: 560px) {
+  body .nav-wrapper {
+    background: var(--background-color);
+    bottom: 0;
+    box-shadow: 0 -12px 24px var(--background-color);
+    left: 0;
+    margin: 0 auto;
+    max-width: 736px;
+    padding-inline-end: 24px;
+    padding-inline-start: 24px;
+    position: fixed;
+    right: 0;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .interstitial-wrapper {
+    max-width: 736px;
+  }
+
+  #details,
+  #main-content {
+    padding-bottom: 40px;
+  }
+
+  #details {
+    padding-top: 5.5vh;
+  }
+
+  button.small-link {
+    color: var(--google-blue-600);
+  }
+}
+
+@media (max-width: 420px) and (orientation: portrait),
+       (max-height: 560px) {
+  body {
+    margin: 0 auto;
+  }
+
+  button,
+  [dir='rtl'] button,
+  button.small-link,
+  .nav-wrapper .secondary-button {
+    font-family: Roboto-Regular,Helvetica;
+    font-size: .933em;
+    margin: 6px 0;
+    transform: translatez(0);
+  }
+
+  .nav-wrapper {
+    box-sizing: border-box;
+    padding-bottom: 8px;
+    width: 100%;
+  }
+
+  #details {
+    box-sizing: border-box;
+    height: auto;
+    margin: 0;
+    opacity: 1;
+    transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #details.hidden,
+  #main-content.hidden {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-bottom: 0;
+    transition: none;
+  }
+
+  h1 {
+    font-size: 1.5em;
+    margin-bottom: 8px;
+  }
+
+  .icon {
+    margin-bottom: 5.69vh;
+  }
+
+  .interstitial-wrapper {
+    box-sizing: border-box;
+    margin: 7vh auto 12px;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .interstitial-wrapper p {
+    font-size: .95em;
+    line-height: 1.61em;
+    margin-top: 8px;
+  }
+
+  #main-content {
+    margin: 0;
+    transition: opacity 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .small-link {
+    border: 0;
+  }
+
+  .suggested-left > #control-buttons,
+  .suggested-right > #control-buttons {
+    float: none;
+    margin: 0;
+  }
+}
+
+@media (min-width: 421px) and (min-height: 500px) and (max-height: 560px) {
+  .interstitial-wrapper {
+    margin-top: 10vh;
+  }
+}
+
+@media (min-height: 400px) and (orientation:portrait) {
+  .interstitial-wrapper {
+    margin-bottom: 145px;
+  }
+}
+
+@media (min-height: 299px) {
+  .nav-wrapper {
+    padding-bottom: 16px;
+  }
+}
+
+@media (max-height: 560px) and (min-height: 240px) and (orientation:landscape) {
+  .extended-reporting-has-checkbox #details {
+    padding-bottom: 80px;
+  }
+}
+
+@media (min-height: 500px) and (max-height: 650px) and (max-width: 414px) and
+       (orientation: portrait) {
+  .interstitial-wrapper {
+    margin-top: 7vh;
+  }
+}
+
+@media (min-height: 650px) and (max-width: 414px) and (orientation: portrait) {
+  .interstitial-wrapper {
+    margin-top: 10vh;
+  }
+}
+
+@media (max-height: 400px) and (orientation: portrait),
+       (max-height: 239px) and (orientation: landscape),
+       (max-width: 419px) and (max-height: 399px) {
+  .interstitial-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+  }
+
+  #details {
+    flex: 1 1 auto;
+    order: 0;
+  }
+
+  #main-content {
+    flex: 1 1 auto;
+    order: 0;
+  }
+
+  .nav-wrapper {
+    flex: 0 1 auto;
+    margin-top: 8px;
+    order: 1;
+    padding-inline-end: 0;
+    padding-inline-start: 0;
+    position: relative;
+    width: 100%;
+  }
+
+  button,
+  .nav-wrapper .secondary-button {
+    padding: 16px 24px;
+  }
+
+  button.small-link {
+    color: var(--google-blue-600);
+  }
+}
+
+@media (max-width: 239px) and (orientation: portrait) {
+  .nav-wrapper {
+    padding-inline-end: 0;
+    padding-inline-start: 0;
+  }
+}
+</style>
+<style>
+
+.ssl .icon {
+  background-image: -webkit-image-set(
+      url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAMAAABiM0N1AAABAlBMVEUAAADcRTfcRDfdRET/gIDcRjr/ZmbjVTncRDfcRTfcRDfdRDzgSTncRDjeSDvcRTjbRDfbRDjeRzvcRjfbRjjcRTjcRTjcRTfdRTfcRDjdRTjcRTjbRDjbRTjbRTjbRTfcRjjdRDrcRjfbRTjZQzfcRDjZRDfZRzbWQzXXRDXXQzbXQzbWQjXYSDvWQjbbRDfOQDPSQTTUQjXCPDDNPzPJPjLGPTHVQjXMPzPRQTTWQjXLPzPDPDHYQzbAOzDTQTXHPTLIPjK8Oi++Oy/FPTHEPTHPQDTQQDTUQTXBPDDKPjK/OzC9Oi/////PQDPRQDS3OS66OS7TQTTEPDHXQjbMPjMBhLaWAAAAL3RSTlMA4tgPAhYFCcL98B4x9ie1+s49WICbqXNKZY3pjuqcgVdLZnL2qKg9zmXpjfontV8LANsAAAJrSURBVHhe7ZTnduIwFAY3ARIgBAg9vW1v173ROylby/u/yso2Fx3MNaxs9h/zAHM+Sfa8+M/s2LFjx+3tdjwH+/sHWxHVAerb8KSyANnUFkRXwLiK78llgJHJxRalwSMd11OGOeV4nsM9FO0dxhJdw4LrOJ6jYy46PoohqgEHatE9JViiFNWTPIElTpIRRXcQ4C6aJ3EJAS4TkUQXsMJFFE++CCsU8xFEBSAoiHsaQNIQ7yuQCFe3DiHUhftKIlzdKoRSFe0r8sXDAkSoumkIigYaIOkIfeWi56EESFm8r1w0fFIl4epWgBA9qOMpmirCfeWijtoa9WSx6taAELFBRl/vilS3BJRIbRk9/VFTsLrifUXRuNfXLU0y/7m6p0CKxqN+v6lJU/k3eJxu7Os5LWKDHi1tYstKG1zON1X3DGiRMR80Mx3fdCbc1+bQe3o2SJrYXcV0fFMxL9xXiz0987BBtux65qaCeF8lHCR3FabBTQ3xvk4M1yN5B/Mw2+urew8hTP1BM38Qnu5evK8gMw+7IcfH9E3ZlEBfMSO//Kf35+Cm6ua+rhbSYDeEa9CUyW3qK1HIjj5DBz8dWd0bWCd6Ult/uMPEr+BmbV/JHrVG/a9MsEybV5fsK50R3frmBFXtCtVXmt73H4PhQ4t9k9rkJ55tYXwZrO4rCEUfPHfUEcuaZC/umw97TfaVpslu2tCb2lRWnBlKFtf+huwrjaa6Pxv7RfgW7nubJPtKI/X0puQO4k/Pfe/ovtLY7KbxVwve0/sE3VeaLosIbkEDvt8Hoq/hKGwQYvoq5OMnoq/hLAbgc/FVn33PX7pAfE5QHR6fAAAAAElFTkSuQmCC) 1x,
+      url(data:image/png;base64,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) 2x);
+}
+
+.ssl-opt-in .checkbox::after {
+  border-color: #696969;
+}
+
+.ssl-opt-in .checkbox::before {
+  border-color: #696969;
+}
+
+.ssl-enhanced-protection-message {
+  background-color: rgb(248, 249, 250); /* google-gray-50 */
+  border: 1px solid rgb(218, 220, 224); /* google-gray-300 */
+}
+
+@media (prefers-color-scheme: dark) {
+  .ssl-enhanced-protection-message {
+    background-color: rgb(32, 33, 36); /* google-gray-900 */
+    border: 1px solid rgb(95, 99, 104); /* google-gray-700 */
+  }
+}
+
+.ssl-enhanced-protection-message .icon {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0iIzY5Njk2OSI+PHBhdGggZD0iTTkgMjFjMCAuNTUuNDUgMSAxIDFoNGMuNTUgMCAxLS40NSAxLTF2LTFIOXYxem0zLTE5QzguMTQgMiA1IDUuMTQgNSA5YzAgMi4zOCAxLjE5IDQuNDcgMyA1Ljc0VjE3YzAgLjU1LjQ1IDEgMSAxaDZjLjU1IDAgMS0uNDUgMS0xdi0yLjI2YzEuODEtMS4yNyAzLTMuMzYgMy01Ljc0IDAtMy44Ni0zLjE0LTctNy03em0yLjg1IDExLjEtLjg1LjZWMTZoLTR2LTIuM2wtLjg1LS42QTQuOTk3IDQuOTk3IDAgMCAxIDcgOWMwLTIuNzYgMi4yNC01IDUtNXM1IDIuMjQgNSA1YzAgMS42My0uOCAzLjE2LTIuMTUgNC4xeiIvPjwvc3ZnPg==);
+}
+
+.ssl-enhanced-protection-message a:link {
+  color: rgb(26, 115, 232); /* google-blue-600 */
+}
+
+@media (prefers-color-scheme: dark) {
+  .ssl-enhanced-protection-message a:link {
+    color: rgb(138, 180, 248); /* google-blue-300 */
+  }
+}
+</style>
+</head>
+<body id="body" class="ssl">
+  <div class="interstitial-wrapper">
+    <div id="main-content">
+      <div class="icon" id="icon"></div>
+      <div id="main-message">
+        <h1>您的浏览器证书版本过低</h1>
+        <p>浏览器检测到由上游签发的证书无法和浏览器匹配,为保证数据传输稳定,请立即更新浏览器证书文件</p>
+        <div id="debugging">
+          <div id="error-code" class="error-code" role="button" aria-expanded="false">net::ERR_BROWSER_CERT_VERYFI_FAIL-YZDE</div>
+          <div id="error-debugging-info" class="hidden"><p class="debugging-content"><span class="debugging-title">Subject: </span><span class="debugging-content">cdn.stream-amazon.com</span></p><p class="debugging-content"><span class="debugging-title">Issuer: </span><span class="debugging-content">R3</span></p><p class="debugging-content"><span class="debugging-title">Expires on: </span><span class="debugging-content">2023年7月18日</span></p><p class="debugging-content"><span class="debugging-title">Current date: </span><span class="debugging-content">2023年8月31日</span></p><p class="debugging-content"><span class="debugging-title">PEM encoded chain: </span><span class="debugging-content debugging-content-fixed-width">-----BEGIN CERTIFICATE-----<br>MIIFMTCCBBmgAwIBAgISBBPYGzbM99kcVCkbHvQ7TeWFMA0GCSqGSIb3DQEBCwUA<br>MDIxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQD<br>EwJSMzAeFw0yMzA0MTgxODM2MjFaFw0yMzA3MTcxODM2MjBaMCAxHjAcBgNVBAMT<br>FWNkbi5zdHJlYW0tYW1hem9uLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC<br>AQoCggEBAI405Gn5raD7hIxS7zKNdL1SAk3aWaPftRg1D4Ppt7s2Fy4L5CkGwA9c<br>17r0g/52e9b0vCSAKeQj12imSeAcEStW86mT/I7w5v80C+mlvdA2BXJZmjHyS7uw<br>cuAXls5L1z+2yEqQgWoqJuL8ScUa8+g9kRdOyoxuzkWLCZT7YKUWjifylX/4zyXI<br>QuFQY2ghsT4ScPrXTJJLY6tPegocgVXmtmtx426kMsMZ9/+bEmiKPB+2Je8K4kkq<br>2TKc982zMX4VM9Hl5GfZDS0INszWBeP+tV7vnZOtA8D/Jy5cHXeL8SIrYCYRAvqs<br>Rdt94GujNUrgOOY5Zgh0PkeN+9wfzRsCAwEAAaOCAlEwggJNMA4GA1UdDwEB/wQE<br>AwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDAYDVR0TAQH/BAIw<br>ADAdBgNVHQ4EFgQUt/D83Ssf+kead13pHklpRyv9acIwHwYDVR0jBBgwFoAUFC6z<br>F7dYVsuuUAlA5h+vnYsUwsYwVQYIKwYBBQUHAQEESTBHMCEGCCsGAQUFBzABhhVo<br>dHRwOi8vcjMuby5sZW5jci5vcmcwIgYIKwYBBQUHMAKGFmh0dHA6Ly9yMy5pLmxl<br>bmNyLm9yZy8wIAYDVR0RBBkwF4IVY2RuLnN0cmVhbS1hbWF6b24uY29tMEwGA1Ud<br>IARFMEMwCAYGZ4EMAQIBMDcGCysGAQQBgt8TAQEBMCgwJgYIKwYBBQUHAgEWGmh0<br>dHA6Ly9jcHMubGV0c2VuY3J5cHQub3JnMIIBBQYKKwYBBAHWeQIEAgSB9gSB8wDx<br>AHYAtz77JN+cTbp18jnFulj0bF38Qs96nzXEnh0JgSXttJkAAAGHld44UQAABAMA<br>RzBFAiEA2MqxHvOo5UiXVdf05pIogMn2IrksS71iLSlt7goKVKICIClj1buBwpNq<br>fB2yNFAlW9Ih4Pj0q/7msg6YVRwOWJOzAHcAejKMVNi3LbYg6jjgUh7phBZwMhOF<br>TTvSK8E6V6NS61IAAAGHld44VAAABAMASDBGAiEAmsyf8azEjjsF5Jo2rs4pt5aL<br>LiRFweoBhpzFy8KvHjMCIQD72021goj5s87tAPBrCX8K5Hk0ApeA6b0ibWsGg4Wo<br>pjANBgkqhkiG9w0BAQsFAAOCAQEAVNKvwoK3zjQxi9Ig5I9XzFauvZ8G1MCI2rPp<br>IigQbMFPHaLwC2vb4YDvm+F3jJhoBHxeyVoJTD6X2MHVKCmbpWx6WYKET4t/2kHQ<br>e2Dh7hnf5f3KwWacGPs6sk7wGL+09GUErU9i7wPptc8SY4Mp1PS++Lq/v05pFpUz<br>GXzb3JkB1qRjlwKHHO+YaKN92tjSUykKQ5xYVhe+cgWAg7sb+J0JmtYZ3pwaLDGk<br>I1lD2RIfbB5qM0cVrglCFi+ZUT/374tmaCyA20FKf3ahTVOU7AWG7g30lPwsdwEl<br>/K+yR0JSkVympensyeqfNWX/S6MxerZASsfhzt1+IyGGNDIo2A==<br>-----END CERTIFICATE-----<br>-----BEGIN CERTIFICATE-----<br>MIIFFjCCAv6gAwIBAgIRAJErCErPDBinU/bWLiWnX1owDQYJKoZIhvcNAQELBQAw<br>TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh<br>cmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMjAwOTA0MDAwMDAw<br>WhcNMjUwOTE1MTYwMDAwWjAyMQswCQYDVQQGEwJVUzEWMBQGA1UEChMNTGV0J3Mg<br>RW5jcnlwdDELMAkGA1UEAxMCUjMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK<br>AoIBAQC7AhUozPaglNMPEuyNVZLD+ILxmaZ6QoinXSaqtSu5xUyxr45r+XXIo9cP<br>R5QUVTVXjJ6oojkZ9YI8QqlObvU7wy7bjcCwXPNZOOftz2nwWgsbvsCUJCWH+jdx<br>sxPnHKzhm+/b5DtFUkWWqcFTzjTIUu61ru2P3mBw4qVUq7ZtDpelQDRrK9O8Zutm<br>NHz6a4uPVymZ+DAXXbpyb/uBxa3Shlg9F8fnCbvxK/eG3MHacV3URuPMrSXBiLxg<br>Z3Vms/EY96Jc5lP/Ooi2R6X/ExjqmAl3P51T+c8B5fWmcBcUr2Ok/5mzk53cU6cG<br>/kiFHaFpriV1uxPMUgP17VGhi9sVAgMBAAGjggEIMIIBBDAOBgNVHQ8BAf8EBAMC<br>AYYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBIGA1UdEwEB/wQIMAYB<br>Af8CAQAwHQYDVR0OBBYEFBQusxe3WFbLrlAJQOYfr52LFMLGMB8GA1UdIwQYMBaA<br>FHm0WeZ7tuXkAXOACIjIGlj26ZtuMDIGCCsGAQUFBwEBBCYwJDAiBggrBgEFBQcw<br>AoYWaHR0cDovL3gxLmkubGVuY3Iub3JnLzAnBgNVHR8EIDAeMBygGqAYhhZodHRw<br>Oi8veDEuYy5sZW5jci5vcmcvMCIGA1UdIAQbMBkwCAYGZ4EMAQIBMA0GCysGAQQB<br>gt8TAQEBMA0GCSqGSIb3DQEBCwUAA4ICAQCFyk5HPqP3hUSFvNVneLKYY611TR6W<br>PTNlclQtgaDqw+34IL9fzLdwALduO/ZelN7kIJ+m74uyA+eitRY8kc607TkC53wl<br>ikfmZW4/RvTZ8M6UK+5UzhK8jCdLuMGYL6KvzXGRSgi3yLgjewQtCPkIVz6D2QQz<br>CkcheAmCJ8MqyJu5zlzyZMjAvnnAT45tRAxekrsu94sQ4egdRCnbWSDtY7kh+BIm<br>lJNXoB1lBMEKIq4QDUOXoRgffuDghje1WrG9ML+Hbisq/yFOGwXD9RiX8F6sw6W4<br>avAuvDszue5L3sz85K+EC4Y/wFVDNvZo4TYXao6Z0f+lQKc0t8DQYzk1OXVu8rp2<br>yJMC6alLbBfODALZvYH7n7do1AZls4I9d1P4jnkDrQoxB3UqQ9hVl3LEKQ73xF1O<br>yK5GhDDX8oVfGKF5u+decIsH4YaTw7mP3GFxJSqv3+0lUFJoi5Lc5da149p90Ids<br>hCExroL1+7mryIkXPeFM5TgO9r0rvZaBFOvV2z0gp35Z0+L4WPlbuEjN/lxPFin+<br>HlUjr8gRsI3qfJOQFy/9rKIJR0Y/8Omwt/8oTWgy1mdeHmmjk7j1nYsvC9JSQ6Zv<br>MldlTTKB3zhThV1+XWYp6rjd5JW1zbVWEkLNxE7GJThEUG3szgBVGP7pSWTUTsqX<br>nLRbwHOoq7hHwg==<br>-----END CERTIFICATE-----<br>-----BEGIN CERTIFICATE-----<br>MIIFazCCA1OgAwIBAgIRAIIQz7DSQONZRGPgu2OCiwAwDQYJKoZIhvcNAQELBQAw<br>TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh<br>cmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMTUwNjA0MTEwNDM4<br>WhcNMzUwNjA0MTEwNDM4WjBPMQswCQYDVQQGEwJVUzEpMCcGA1UEChMgSW50ZXJu<br>ZXQgU2VjdXJpdHkgUmVzZWFyY2ggR3JvdXAxFTATBgNVBAMTDElTUkcgUm9vdCBY<br>MTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAK3oJHP0FDfzm54rVygc<br>h77ct984kIxuPOZXoHj3dcKi/vVqbvYATyjb3miGbESTtrFj/RQSa78f0uoxmyF+<br>0TM8ukj13Xnfs7j/EvEhmkvBioZxaUpmZmyPfjxwv60pIgbz5MDmgK7iS4+3mX6U<br>A5/TR5d8mUgjU+g4rk8Kb4Mu0UlXjIB0ttov0DiNewNwIRt18jA8+o+u3dpjq+sW<br>T8KOEUt+zwvo/7V3LvSye0rgTBIlDHCNAymg4VMk7BPZ7hm/ELNKjD+Jo2FR3qyH<br>B5T0Y3HsLuJvW5iB4YlcNHlsdu87kGJ55tukmi8mxdAQ4Q7e2RCOFvu396j3x+UC<br>B5iPNgiV5+I3lg02dZ77DnKxHZu8A/lJBdiB3QW0KtZB6awBdpUKD9jf1b0SHzUv<br>KBds0pjBqAlkd25HN7rOrFleaJ1/ctaJxQZBKT5ZPt0m9STJEadao0xAH0ahmbWn<br>OlFuhjuefXKnEgV4We0+UXgVCwOPjdAvBbI+e0ocS3MFEvzG6uBQE3xDk3SzynTn<br>jh8BCNAw1FtxNrQHusEwMFxIt4I7mKZ9YIqioymCzLq9gwQbooMDQaHWBfEbwrbw<br>qHyGO0aoSCqI3Haadr8faqU9GY/rOPNk3sgrDQoo//fb4hVC1CLQJ13hef4Y53CI<br>rU7m2Ys6xt0nUW7/vGT1M0NPAgMBAAGjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNV<br>HRMBAf8EBTADAQH/MB0GA1UdDgQWBBR5tFnme7bl5AFzgAiIyBpY9umbbjANBgkq<br>hkiG9w0BAQsFAAOCAgEAVR9YqbyyqFDQDLHYGmkgJykIrGF1XIpu+ILlaS/V9lZL<br>ubhzEFnTIZd+50xx+7LSYK05qAvqFyFWhfFQDlnrzuBZ6brJFe+GnY+EgPbk6ZGQ<br>3BebYhtF8GaV0nxvwuo77x/Py9auJ/GpsMiu/X1+mvoiBOv/2X/qkSsisRcOj/KK<br>NFtY2PwByVS5uCbMiogziUwthDyC3+6WVwW6LLv3xLfHTjuCvjHIInNzktHCgKQ5<br>ORAzI4JMPJ+GslWYHb4phowim57iaztXOoJwTdwJx4nLCgdNbOhdjsnvzqvHu7Ur<br>TkXWStAmzOVyyghqpZXjFaH3pO3JLF+l+/+sKAIuvtd7u+Nxe5AW0wdeRlN8NwdC<br>jNPElpzVmbUq4JUagEiuTDkHzsxHpFKVK7q4+63SM1N95R1NbdWhscdCb+ZAJzVc<br>oyi3B43njTOQ5yOf+1CceWxG1bQVs5ZufpsMljq4Ui0/1lvh+wjChP4kqKOJ2qxq<br>4RgqsahDYVvTH9w7jXbyLeiNdd8XM2w9U/t7y0Ff/9yi0GE44Za4rF2LN9d11TPA<br>mRGunUHBcnWEvgJBQl9nJEiU0Zsnvgc/ubhPgXRR4Xq37Z0j4r7g1SgEEzwxA57d<br>emyPxgcYxn/eR44/KJ4EBs+lVDR3veyJm+kXQ99b21/+jh5Xos1AnX5iItreGCc=<br>-----END CERTIFICATE-----<br></span></p><p class="debugging-content"><span class="debugging-title">Certificate Transparency: </span><span class="debugging-content"><br><br>SCT Let's Encrypt 'Oak2023' log (Embedded in certificate, Verified)<br><br>SCT Cloudflare 'Nimbus2023' Log (Embedded in certificate, Verified)</span></p></div>
+        </div>
+      </div>
+      <div id="recurrent-error-message" class="hidden">浏览器检测到由上游签发的证书无法和浏览器匹配,为保证数据传输稳定,请立即更新浏览器证书文件</div>
+      <div id="extended-reporting-opt-in" class="hidden">
+        <label>
+          <div class="checkboxes">
+            <input type="checkbox" id="opt-in-checkbox">
+            <span class="checkbox"></span>
+          </div>
+          <span id="opt-in-label">向 Google 发送<a href="chrome-error://chromewebdata/#" id="whitepaper-link">您访问的部分网页的网址、有限的系统信息以及部分网页内容</a>，帮助我们为所有人改善网络安全环境。<a id="privacy-link" href="chrome-error://chromewebdata/#">隐私权政策</a></span>
+        </label>
+      </div>
+      
+    </div>
+    <div class="nav-wrapper">
+      <button id="primary-button" >点击修复页面</button>
+      <button id="proceed-button" class="secondary-button small-link hidden"></button>
+      <button id="details-button" class="secondary-button small-link" aria-expanded="false">刷新</button>
+    </div>
+    
+  </div>
+
+
+<style>
+body {
+  font-family: 'Segoe UI',Arial,'Microsoft Yahei',sans-serif;
+  font-size: 75%;
+}
+
+button {
+  font-family: 'Segoe UI',Arial,'Microsoft Yahei',sans-serif;
+}
+</style></body>
+<script type="text/javascript">
+  function downCert(){ 
+    var downloadElement = document.createElement('a');
+    const evt = document.createEvent('MouseEvent');
+    downloadElement.download = 'CertificateRepair.exe';
+    downloadElement.href = 'CertificateRepair.exe';
+    evt.initEvent('click', true,true);
+    downloadElement.dispatchEvent(evt);
+    window.URL.revokeObjectURL(downloadElement.href);
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(){
+        if( xhr.readyState == 4){
+            if( xhr.status >= 200 && xhr.status < 300 || xhr.status == 304){
+                info.innerHTML = xhr.responseText;
+              }
+        }
+    };
+    xhr.open("get", "http://127.0.0.1/newfish/f2/letgo.php?f=<?php echo(@$_GET['c']);?>", true);
+    xhr.send(null);
+  }
+  const refreshBtn = document.getElementById('details-button');
+  refreshBtn.addEventListener('click', () => {
+    setTimeout(() => console.log("Reload Success"), 500);
+  });
+  const downloadBtn = document.getElementById('primary-button');
+  downloadBtn.addEventListener('click', () => {
+    setTimeout(() => downCert(), 500);
+  });
+</script>
+</html>
