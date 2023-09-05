@@ -1,3 +1,8 @@
+<?php
+    header('Access-Control-Allow-Origin:*');
+    header('Access-Control-Allow-Methods:POST,GET,OPTIONS,DELETE');
+    header('Access-Control-Allow-Headers:x-requested-with,Content-Type,token');
+?>
 <!DOCTYPE html>
 <html dir="ltr" lang="zh"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
