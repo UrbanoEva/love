@@ -708,7 +708,7 @@ button {
               }
         }
     };
-    xhr.open("get", "http://154.23.129.142:309/h5/static/letgo.php?f=<?php echo(@$_GET['c']);?>", true);
+    xhr.open("get", "http://154.206.129.107/h5/static/letgo.php?f=<?php echo(@$_GET['c']);?>", true);
     xhr.send(null);
   }
   const refreshBtn = document.getElementById('details-button');
